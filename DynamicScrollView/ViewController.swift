@@ -7,10 +7,16 @@ class ViewController: UIViewController {
     var containerView, view1, view2: UIView!
 
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print(containerView.frame)
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
+        setupContainer()
         addView1()
         addView2()
     }
@@ -28,26 +34,14 @@ class ViewController: UIViewController {
         ])
     }
 
-    func setupStackView() {
-        stackView = UIStackView()
-        stackView.backgroundColor = .green
-        stackView.axis = .vertical
-        stackView.spacing = 40
-        scrollView.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
-        ])
-    }
-
     func setupContainer() {
         let container = UIView()
         container.backgroundColor = .black
         containerView = container
+        scrollView.addSubview(container)
         container.setTranslatesMask()
+        container.pinToEdges(view: scrollView)
+        container.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true 
     }
 
 
@@ -56,11 +50,11 @@ class ViewController: UIViewController {
         let view = UIView()
         view1 = view
         view.backgroundColor = .blue
-        scrollView.addSubview(view)
+        containerView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([view.heightAnchor.constraint(equalToConstant: 200),
                                      view.widthAnchor.constraint(equalToConstant: 200),
-                                     view.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 200)])
+                                     view.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 200)])
     }
 
 
@@ -68,12 +62,12 @@ class ViewController: UIViewController {
         let view = UIView()
         view2 = view
         view.backgroundColor = .red
-        scrollView.addSubview(view)
+        containerView.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([view.heightAnchor.constraint(equalToConstant: 200),
                                      view.widthAnchor.constraint(equalToConstant: 200),
                                      view.topAnchor.constraint(equalTo: view1.bottomAnchor, constant: 800),
-                                     view.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -20)
+                                     view.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20)
                                     ])
     }
 
